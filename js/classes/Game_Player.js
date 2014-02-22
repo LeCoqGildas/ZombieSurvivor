@@ -34,6 +34,7 @@ Class.create("Game_Player", {
 		}
 		var speed = this.speed * this.a;
 		var x = this.x;
+		var y = this.y;
 
 		switch(dir){
 			case "left":
@@ -52,11 +53,12 @@ Class.create("Game_Player", {
 		if(this.map.isPassable(this, x, this.y)){
 			//console.log("passable");
 			this.x = x;
+			this.y = y;
 
 		}else{
 			//console.log("pas passable");
 		}
-		return this.x;
+		return dir == "up" || dir == "bottom" ? this.y : this.x;
 
 	},
 	moveClear: function(){
@@ -73,6 +75,7 @@ Class.create("Game_Player", {
 				this.dece_dir = false;
 			}
 			var speed = this.speed * this.d;
+			var y = this.y;
 			var x = this.x;
 			switch(dir){
 	
@@ -91,12 +94,13 @@ Class.create("Game_Player", {
 			}
 			if(this.map.isPassable(this, x, this.y)){
 				//console.log("passable");
+				this.y = y;
 				this.x = x;
 			}else{
 				//console.log("pas passable");
 			}
 		}
-		return this.x;
+		return dir == "up" || dir == "bottom" ? this.y : this.x;
 	},
 	setDeceleration: function(dir){
 		this.dece_dir = dir;

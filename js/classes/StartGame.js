@@ -42,46 +42,7 @@ canvas.Scene.new({
 			});
 			self.scrolling.setScreen(map);
 		
-			var anim_right = canvas.Animation.new({
-				images:"playerSprite",
-				animations:{
-					right:{
-						frames: [2,2],
-						size:{
-							width:64,
-							height:64,
-						},
-						frequence: 6
-					}
-				}
-			});
-			var anim_left = canvas.Animation.new({
-				images:"playerSprite",
-				animations:{
-					left:{
-						frames: [1,2],
-						size:{
-							width: 64,
-							height: 64,
-						},
-						frequence: 6
-					}
-				}
-			});
-			var anim_up = canvas.Animation.new({
-				images:"playerSprite",
-				animations:{
-					up:{
-						frames: [3,2],
-						size:{
-							width:64,
-							height:64,
-						},
-						frequence: 6
-					}
-				}
-			});
-			var anim_bottom = canvas.Animation.new({
+			var anim = canvas.Animation.new({
 				images:"playerSprite",
 				animations:{
 					bottom:{
@@ -91,61 +52,77 @@ canvas.Scene.new({
 							height: 64,
 						},
 						frequence: 6
+					},
+					left:{
+						frames: [3,5],
+						size:{
+							width: 64,
+							height: 64,
+						},
+						frequence: 6
+					},
+					right:{
+						frames: [6,8],
+						size:{
+							width:64,
+							height:64,
+						},
+						frequence: 6
+					},
+					
+					up:{
+						frames: [9,11],
+						size:{
+							width:64,
+							height:64,
+						},
+						frequence: 6
 					}
+					
 				}
 			});
 
-			anim_left.add(self.player);
-			anim_right.add(self.player);
-			anim_up.add(self.player);
-			anim_bottom.add(self.player);
+			anim.add(self.player);
 
 			canvas.Input.keyDown(Input.Right, function(){
-				//self.player
-				anim_right.play("right",true);
+				anim.play("right",true);
 			});
-
 			canvas.Input.keyDown(Input.Left, function(){
-				anim_left.play("left",true);
-				
+				anim.play("left",true);
 			});
-			canvas.Input.keyDown(Input.Up, function(){
-				//self.player
-				anim_up.play("up",true);
+			canvas.Input.keyDown(Input.Up, function(){	
+				anim.play("up",true);
 			});
-
 			canvas.Input.keyDown(Input.Bottom, function(){
-				anim_bottom.play("bottom",true);
-				
+				anim.play("bottom",true);	
 			});
 
 			canvas.Input.keyUp(Input.Right, function(){
-				anim_right.stop();
+				anim.stop();
 				self.game_player.moveClear();
 				self.game_player.setDeceleration("right");
-				//self.player.drawImage("player");
+				self.player.drawImage("playerBottomFix");
 				
 			});
 
 			canvas.Input.keyUp(Input.Left, function(){
-				anim_left.stop();
+				anim.stop();
 				self.game_player.moveClear();
 				self.game_player.setDeceleration("left");
-				//self.player.drawImage("player");
+				self.player.drawImage("playerBottomFix");
 			});
 			canvas.Input.keyUp(Input.Up, function(){
-				anim_up.stop();
+				anim.stop();
 				self.game_player.moveClear();
 				self.game_player.setDeceleration("up");
-				//self.player.drawImage("player");
-				
+				self.player.drawImage("playerBottomFix");
 			});
 
 			canvas.Input.keyUp(Input.Bottom, function(){
-				anim_bottom.stop();
+				anim.stop();
 				self.game_player.moveClear();
 				self.game_player.setDeceleration("Bottom");
-				//self.player.drawImage("player");
+				self.player.drawImage("playerBottomFix");
 			});
 				
 			/*canvas.Input.press(Input.Space, function(){	
