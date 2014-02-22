@@ -1,10 +1,14 @@
 [
 	{
-		//"id": "_background",
-		//"path": "img/sd/title/castle.png"
+		"id": "title_background",
+		"path": "img/sd/title/background.jpg"
 	},
 	{
-		//"id": "button_Off",
-		//"path": "img/sd/title/button_Off.png"
+		"id": "button_Off",
+		"path": "img/sd/title/button_Off.png"
+	},
+	{
+		"id": "button_On",
+		"path": "img/sd/title/button_On.png"
 	}
 ]
