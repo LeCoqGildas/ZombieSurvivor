@@ -13,16 +13,15 @@ Class.create("Game_Map", {
 			var ent;
 			var self = this;
 
-			if(new_x < 0 || (new_x + player.width) > this.map.getWidthPixel()){
+			if(new_x < 0 || (new_x + player.width) > this.map.getWidthPixel() || 
+				new_y < 0 || (new_y + player.height) > this.map.getHeightPixel()){
 				return false;
-			}
-			
+			}	
 			var tile_w = this.map.getTileWidth();
 			var tile_h = this.map.getTileHeight();
 
 			
 			function pointIsPassableInTile(x,y){
-
 				var map_x = Math.floor(x / tile_w );
 				var map_y = Math.floor(y / tile_h );
 				var props = self.map.getTileProperties(null, map_x, map_y);
@@ -40,7 +39,6 @@ Class.create("Game_Map", {
 				|| !pointIsPassableInTile(new_x + player.width, new_y + player.height)){
 				return false;
 			}
-
 			//return true;
 
 			function pointIsPassable(ent, x, y){
@@ -48,9 +46,7 @@ Class.create("Game_Map", {
 					ent.hit(true);//ref game_entity
 					return false;
 				}
-
 				ent.hit(false);
-
 				return true;
 			}
 
@@ -60,13 +56,10 @@ Class.create("Game_Map", {
 					|| !pointIsPassable(ent, new_x +player.width, new_y)
 					|| !pointIsPassable(ent, new_x , new_y + player.height)
 					|| !pointIsPassable(ent, new_x + player.width, new_y + player.height)){
-					
 					//non traversable
 					//return false;
 				}
-			
 			}
 			return true;
 		}
-
 });

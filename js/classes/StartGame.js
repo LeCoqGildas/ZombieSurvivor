@@ -33,7 +33,7 @@ canvas.Scene.new({
 			
 			var map = self.scrolling.addScroll({
 				element: this.el, //element décor
-				speed: 10,//vitesse de defilement
+				speed: 7,//vitesse de defilement
 				block: true, //ne défile plus si les extremite touche le bord du canvas
 				width: this.getWidthPixel(),
 				height: this.getHeightPixel()
@@ -94,28 +94,28 @@ canvas.Scene.new({
 			});
 			canvas.Input.keyUp(Input.Right, function(){
 				anim.stop();
-				self.game_player.moveClear();
+				//self.game_player.moveClear();
 				self.game_player.setDeceleration("right");
-				self.player.drawImage("playerBottomFix");
+				//self.player.drawImage("playerBottomFix");
 				
 			});
 			canvas.Input.keyUp(Input.Left, function(){
 				anim.stop();
-				self.game_player.moveClear();
+				//self.game_player.moveClear();
 				self.game_player.setDeceleration("left");
-				self.player.drawImage("playerBottomFix");
+				//self.player.drawImage("playerBottomFix");
 			});
 			canvas.Input.keyUp(Input.Up, function(){
 				anim.stop();
-				self.game_player.moveClear();
+				//self.game_player.moveClear();
 				self.game_player.setDeceleration("up");
-				self.player.drawImage("playerBottomFix");
+				//self.player.drawImage("playerBottomFix");
 			});
 			canvas.Input.keyUp(Input.Bottom, function(){
 				anim.stop();
-				self.game_player.moveClear();
-				self.game_player.setDeceleration("Bottom");
-				self.player.drawImage("playerBottomFix");
+				//self.game_player.moveClear();
+				self.game_player.setDeceleration("bottom");
+				//self.player.drawImage("playerBottomFix");
 			});
 				
 			/*canvas.Input.press(Input.Space, function(){	
@@ -155,11 +155,10 @@ canvas.Scene.new({
 		}*/
 
 		this.scrolling.update();
+	
 		this.player.x = this.game_player.decelerationXUpdate();
 		this.player.y = this.game_player.decelerationYUpdate();
-		//this.player.y = this.game_player.gravityUpdate();
-		
-		
+
 		stage.refresh();
 	}
 	

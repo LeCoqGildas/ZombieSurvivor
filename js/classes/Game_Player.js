@@ -1,13 +1,13 @@
 Class.create("Game_Player", {
 	map: null,
 	currentState: "",
-	speed: 10,
+	speed: 7,
 	x: 0,
 	y: 0,
 	a: 0,//acceleration
-	d: 1,//decélération
-	height : 32,
-	width : 32,
+	d: 0.1,//decélération
+	height : 64,
+	width : 64,
 	dece_dir: false,
 	dir: "right",
 	_gravity:{
@@ -59,7 +59,7 @@ Class.create("Game_Player", {
 			//console.log("pas passable");
 		}
 		//return (dir == "up" || dir == "bottom") || (dir == "left" || dir == "right") ? this.y : this.x;
-		return dir == "up" || dir == "bottom" ? this.y : this.x;
+		//return dir == "up" || dir == "bottom" ? this.y : this.x;
 
 	},
 	moveClear: function(){
@@ -105,7 +105,7 @@ Class.create("Game_Player", {
 	decelerationYUpdate: function(){
 		var dir = this.dece_dir;
 		if (dir){
-			this.d -= .1;
+			this.d -= .01;
 			if(this.d <= 0){
 				this.d = 0;
 				this.dece_dir = false;
@@ -130,14 +130,13 @@ Class.create("Game_Player", {
 			if(this.map.isPassable(this, x, y)){
 				//console.log("passable");
 				this.y = y;
-				this.x = x;
+				//this.x = x;
 			}
 		}
 		return this.y;
 	},
 	setDeceleration: function(dir){
 		this.dece_dir = dir;
-		console.log(this.dece_dir);
 	}/*,
 	gravityUpdate: function(){
 		var velocity = this._gravity.velocity; 
