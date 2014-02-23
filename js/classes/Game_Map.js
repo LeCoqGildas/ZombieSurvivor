@@ -4,10 +4,23 @@ Class.create("Game_Map", {
 		initialize: function(map){
 			this.map = map;
 		},
-		addEntity: function(id, data){
+		/*addEntity: function(id, data){
 			var entity = Class.new("Game_Entity", [data.x, data.y, data.width, data.height]);
 			this.entities.push(entity);
 			return entity;
+		},*/
+		addEntity: function(id, data){
+			var entity = Class.new("Game_Ennemy", [id,data.x, data.y, data.width, data.height]);
+			this.entities.push(entity);
+			return entity;
+		},
+		removeEntity: function(id){
+			for(var i=0; i < this.entities.length; i++){
+				if(this.entities[id].id = id){
+					this.entities.splice(i,1);
+					return true;
+				}
+			}
 		},
 		isPassable: function(player, new_x, new_y){
 			var ent;

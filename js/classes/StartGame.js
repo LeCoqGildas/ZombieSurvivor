@@ -10,6 +10,48 @@ canvas.Scene.new({
 			
 		}
 	},
+	sprites: {},
+	ennemies: {},
+	addEnnemy: function(id, layer, data){
+		this.ennemies[id] = this.game_map.addEntity(id, data).setParams(data);
+		this.sprites[id] = Class.new("Sprite_Ennemies", [id, this, layer, data]);
+	},
+	pressEnnemies: function(stage){
+		var self = this, damage;
+		canvas.Input.press(Input.Enter, function(){
+			for(var id in self.ennemies){
+				if(self.ennemies[id].isHit()){
+					damage = self.ennemies[id].damage(self.game_player);
+					self.displayDamage(damage, self.sprite[id].el);
+					if(self.sprite[id].hit(damage)){
+						self.deleteEnnemy[id];
+					}
+				}
+			}
+		});
+	},
+	deleteEnnemy: function(id){
+		this.game_map.removeEntity(id);
+		delete this.ennemies[id];
+		delete this.sprites[id];
+	},
+	displayDamage: function(text_damage, sprite){
+		var text = this.createElement();
+		text.font= 'bold 15px Arial';
+		text.fillStyle = '#FFF';
+		text.textBaseline = 'middle';
+		text.fillText(text_damage, 0, 0);
+		text.strokeStyle = '#000';
+		text.strokeText(text_damage, 0,0);
+
+		sprite.append(text);
+
+		canvas.Timeline.new(text)
+			.add({y: -30, opacity: -1}, 40, Ease.easeOutQuint)
+			.call(function(){
+				this.remove();
+			});
+	},
 	ready: function(stage) {
 		var self = this;
 		var tiled = canvas.Tiled.new();
@@ -18,6 +60,7 @@ canvas.Scene.new({
 		tiled.ready(function() {
 			var tile_w = this.getTileWidth();
 			var tile_h = this.getTileHeight();
+			var layer_event;
 
 			self.game_map = Class.new("Game_Map", [this]);
 			self.game_player = Class.new("Game_Player", ["player",64,64,10 * tile_w, 10 * tile_h, self.game_map]);
@@ -25,6 +68,18 @@ canvas.Scene.new({
 			self.player.drawImage("playerBottomFix");
 			self.player.x = self.game_player.x;
 			self.player.y = self.game_player.y;
+			layer_event = this.getLayerObject();
+
+			self.addEnnemy(1, layer_event,{
+				x: 10 * tile_w,
+				y: 5 * tile_h,
+				width: 64,
+				heigth: 64,
+				attack: 10,
+				defense: 5,
+				strength: 10,
+				hp_max: 100
+			});
 			stage.append(self.player);//affiche le joueur
 			
 
@@ -96,41 +151,24 @@ canvas.Scene.new({
 				anim.stop();
 				//self.game_player.moveClear();
 				self.game_player.setDeceleration("right");
-				//self.player.drawImage("playerBottomFix");
-				
 			});
 			canvas.Input.keyUp(Input.Left, function(){
 				anim.stop();
 				//self.game_player.moveClear();
 				self.game_player.setDeceleration("left");
-				//self.player.drawImage("playerBottomFix");
 			});
 			canvas.Input.keyUp(Input.Up, function(){
 				anim.stop();
 				//self.game_player.moveClear();
 				self.game_player.setDeceleration("up");
-				//self.player.drawImage("playerBottomFix");
 			});
 			canvas.Input.keyUp(Input.Bottom, function(){
 				anim.stop();
 				//self.game_player.moveClear();
 				self.game_player.setDeceleration("bottom");
-				//self.player.drawImage("playerBottomFix");
 			});
-				
-			/*canvas.Input.press(Input.Space, function(){	
-				self.game_player.jump(true);
-				//console.log("saut");
-				//animation...
-			});
-
-			canvas.Input.keyUp(Input.Space, function(){	
-				self.game_player.jump(false);
-				//console.log("lacher saut");
-				//animation...
-			});*/
-
 		});
+		this.pressEnnemies(stage);
 	
 	},
 	render: function(stage){
@@ -142,18 +180,13 @@ canvas.Scene.new({
 			"left":[Input.Left,x],
 			"right":[Input.Right,x],
 			"up":[Input.Up,y],
-			"bottom":[Input.Bottom,y]/*,
-			"space":Input.Space*/
+			"bottom":[Input.Bottom,y]
 		};
 		for(var key in input){
 			if(canvas.Input.isPressed(input[key][0])){
 				this.player[input[key][1]] = this.game_player.move(key);
 			}
 		}
-		/*if(canvas.Input.isPressed(Input.Space)){
-			this.game_player.jumpUpdate();	
-		}*/
-
 		this.scrolling.update();
 	
 		this.player.x = this.game_player.decelerationXUpdate();
