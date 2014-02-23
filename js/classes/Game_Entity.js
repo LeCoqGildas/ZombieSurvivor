@@ -1,5 +1,5 @@
 Class.create("Game_Entity", {
-	speed: 5,
+	speed: 1,
 	x: 0,
 	y: 0,
 	width:0,

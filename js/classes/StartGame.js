@@ -15,6 +15,7 @@ canvas.Scene.new({
 	addEnnemy: function(id, layer, data){
 		this.ennemies[id] = this.game_map.addEntity(id, data).setParams(data);
 		this.sprites[id] = Class.new("Sprite_Ennemies", [id, this, layer, data]);
+
 	},
 	pressEnnemies: function(stage){
 		var self = this;
@@ -171,6 +172,7 @@ canvas.Scene.new({
 			});
 		});
 		this.pressEnnemies(stage);
+		
 	},
 	render: function(stage){
 		var self = this;
@@ -197,7 +199,8 @@ canvas.Scene.new({
 		this.player.y = this.game_player.decelerationYUpdate();
 
 		for(var id in this.ennemies){
-			var ennemy = this.ennemies[id]
+			var ennemy = this.ennemies[id];
+			var sprite = this.sprites[id];
 
 			ennemy.reaction(this.game_player, {
 				"aggressive": function(dir){
@@ -207,10 +210,11 @@ canvas.Scene.new({
 					console.log("mid-agressive");
 				},
 				"attack": function(dir){
-					//ennemy = self.game_map.entities[id].move(dir);
-					ennemy.x = self.game_map.entities[id].decelerationXUpdate(dir);
-					ennemy.y = self.game_map.entities[id].decelerationYUpdate(dir);
-
+					self.game_map.entities[id].decelerationXUpdate(dir);
+					sprite.el.x = self.game_map.entities[id].decelerationXUpdate(dir);
+					self.game_map.entities[id].decelerationYUpdate(dir);
+					sprite.el.y = self.game_map.entities[id].decelerationYUpdate(dir);
+					//console.log(self.game_map.entities[id].decelerationYUpdate(dir));
 				}
 				
 			});

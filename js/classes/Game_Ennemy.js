@@ -1,12 +1,11 @@
 Class.create("Game_Ennemy", {
 	map: null,
 	dir: "",
-	speed: 3,
+	speed: 1,
 	x: 0,
 	y: 0,
 	a: 0,//acceleration
 	d: 0.1,//decélération
-	dece_dir: false,
 	attack: 0,
 	defense: 0,
 	strenght: 0,
@@ -64,8 +63,7 @@ Class.create("Game_Ennemy", {
 		}
 		return false;
 	},
-	reaction: function(player, callbacks){
-		
+	reaction: function(player, callbacks){	
 		if(this.detection(player) && this.isDetectionState("detect")){		
 			this.changeDetectionState("reaction");
 
@@ -80,12 +78,20 @@ Class.create("Game_Ennemy", {
 			}
 		}
 		//corriger ici
-		if(player.x < this.x) this.dir = "left";
-		if(player.x > this.x) this.dir = "right";
-		if(player.y < this.y) this.dir = "up";
-		if(player.y > this.y) this.dir = "bottom";
+		if(player.x < this.x && player.y < this.y) this.dir = "leftUp";
+		if(player.x < this.x && player.y == this.y) this.dir = "left";
+		if(player.x < this.x && player.y > this.y) this.dir = "leftBottom";
+
+		if(player.x > this.x && player.y < this.y) this.dir = "rightUp";
+		if(player.x > this.x && player.y == this.y) this.dir = "right";
+		if(player.x > this.x && player.y > this.y) this.dir = "rightBottom";
+
+		if(player.y < this.y && player.x == this.x) this.dir = "up";
+		if(player.y > this.y && player.x == this.x) this.dir = "bottom";
 
 		if(callbacks[this.state]) callbacks[this.state].call(this, this.dir);
+		//console.log(this.dir);
+		//console.log(player.y +" "+ this.y);+ - 4
 	},
 	move: function(dir){
 		this.dir = dir,
@@ -98,24 +104,37 @@ Class.create("Game_Ennemy", {
 		var y = this.y;
 
 		switch(dir){
+			case "leftUp":
+				x -= speed;
+				y -= speed;
+				break;
 			case "left":
-				x -= this.speed;
+				x -= speed;
+				break;
+			case "leftBottom":
+				x -= speed;
+				y += speed;
+				break;
+			case "rightUp":
+				x += speed;
+				y -= speed;
 				break;
 			case "right":
-				x += this.speed;
+				x += speed;
+				break;
+			case "rightBottom":
+				x += speed;
+				y += speed;
 				break;
 			case "up":
-				y -= this.speed;
+				y -= speed;
 				break;
 			case "bottom":
-				y += this.speed;
+				y += speed;
 				break;
 		}
-
-		if(this.map.isPassable(this, x, y)){
-			this.x = x;
-			this.y = y;
-		}
+		this.x = x;
+		this.y = y;
 	},
 	moveClear: function(){
 		this.a = 0;
@@ -125,70 +144,87 @@ Class.create("Game_Ennemy", {
 		var dir = dir;
 
 		if (dir){
-			this.d -= .1;
-			if(this.d <= 0){
-				this.d = 0;
-				this.dir = false;
-			}
-			var speed = this.speed * this.d;
+			var speed = this.speed;
 			var y = this.y;
 			var x = this.x;
 			switch(dir){
-				case "left":
-					x -= speed;
-					break;
-				case "right":
-					x += speed;
-					break;
-				case "up":
-					y -= this.speed;
-					break;
-				case "bottom":
-					y += this.speed;
-					break;
+				case "leftUp":
+				x -= speed;
+				y -= speed;
+				break;
+			case "left":
+				x -= speed;
+				break;
+			case "leftBottom":
+				x -= speed;
+				y += speed;
+				break;
+			case "rightUp":
+				x += speed;
+				y -= speed;
+				break;
+			case "right":
+				x += speed;
+				break;
+			case "rightBottom":
+				x += speed;
+				y += speed;
+				break;
+			case "up":
+				y -= speed;
+				break;
+			case "bottom":
+				y += speed;
+				break;
 			}
-
-			if(this.map.isPassable(this, x, y)){
-				//console.log("passable");
-				console.log(dir);
-				this.y = y;
-				this.x = x;
-			}
+			this.y = y;
+			this.x = x;
 		}
 		return this.x;
+
 	},
 	decelerationYUpdate: function(dir){
 		var dir = dir;
 		if (dir){
-			this.d -= .01;
-			if(this.d <= 0){
-				this.d = 0;
-				this.dir = false;
-			}
-			var speed = this.speed * this.d;
+			var speed = this.speed;
 			var y = this.y;
 			var x = this.x;
 			switch(dir){
-				case "left":
-					x -= speed;
-					break;
-				case "right":
-					x += speed;
-					break;
-				case "up":
-					y -= this.speed;
-					break;
-				case "bottom":
-					y += this.speed;
-					break;
+				case "leftUp":
+				x -= speed;
+				y -= speed;
+				break;
+			case "left":
+				x -= speed;
+				break;
+			case "leftBottom":
+				x -= speed;
+				y += speed;
+				break;
+			case "rightUp":
+				x += speed;
+				y -= speed;
+				break;
+			case "right":
+				x += speed;
+				break;
+			case "rightBottom":
+				x += speed;
+				y += speed;
+				break;
+			case "up":
+				y -= speed;
+				break;
+			case "bottom":
+				y += speed;
+				break;
 			}
-			if(this.map.isPassable(this, x, y)){
-				this.y = y;
-			}
+			this.y = y;
 		}
 		return this.y;
+
 	},
 	setDeceleration: function(dir){
-		this.dece_dir = dir;
+		this.dir = dir;
 	}
 }).extend("Game_Entity");
