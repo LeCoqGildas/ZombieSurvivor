@@ -14,5 +14,9 @@
 	{
 		"id": "zombie1",
 		"path": "img/sd/sprite/zombie1.png"
+	},
+	{
+		"id": "zombie",
+		"path": "img/sd/sprite/zombie.png"
 	}
 ]

@@ -72,15 +72,16 @@ canvas.Scene.new({
 			self.player.y = self.game_player.y;
 			layer_event = this.getLayerObject();
 
-			self.addEnnemy(1, layer_event,{
+			self.addEnnemy(0, layer_event,{
 				x: 10 * tile_w,
-				y: 5 * tile_h,
+				y: 7 * tile_h,
 				width: 64,
 				height: 64,
 				attack: 10,
 				defense: 5,
 				strength: 10,
-				hp_max: 100
+				hp_max: 100,
+				map: self.game_map
 			});
 			stage.append(self.player);//affiche le joueur
 
@@ -170,12 +171,14 @@ canvas.Scene.new({
 			});
 		});
 		this.pressEnnemies(stage);
-	
 	},
 	render: function(stage){
+		var self = this;
 		if(!this.game_player){
 			return;
 		}
+		
+		
 		
 		var input={
 			"left":[Input.Left,x],
@@ -192,6 +195,27 @@ canvas.Scene.new({
 	
 		this.player.x = this.game_player.decelerationXUpdate();
 		this.player.y = this.game_player.decelerationYUpdate();
+
+		for(var id in this.ennemies){
+			var ennemy = this.ennemies[id]
+
+			ennemy.reaction(this.game_player, {
+				"aggressive": function(dir){
+					console.log("agressive");
+				},
+				"mid-aggressive": function(dir){
+					console.log("mid-agressive");
+				},
+				"attack": function(dir){
+					//ennemy = self.game_map.entities[id].move(dir);
+					ennemy.x = self.game_map.entities[id].decelerationXUpdate(dir);
+					ennemy.y = self.game_map.entities[id].decelerationYUpdate(dir);
+
+				}
+				
+			});
+	
+		}
 
 		stage.refresh();
 	}

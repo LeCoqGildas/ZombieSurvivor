@@ -7,8 +7,46 @@ Class.create("Sprite_Ennemies", {
 	initialize: function(id, scene, layer,data){
 		this.scene = scene;
 		this.el = scene.createElement(data.width, data.height);
+		var anim = canvas.Animation.new({
+				images:"zombie",
+				animations:{
+					bottom:{
+						frames: [0,2],
+						size:{
+							width: 64,
+							height: 64,
+						},
+						frequence: 6
+					},
+					left:{
+						frames: [12,14],
+						size:{
+							width: 64,
+							height: 64,
+						},
+						frequence: 6
+					},
+					right:{
+						frames: [24,26],
+						size:{
+							width:64,
+							height:64,
+						},
+						frequence: 6
+					},
+					up:{
+						frames: [38,40],
+						size:{
+							width:64,
+							height:64,
+						},
+						frequence: 6
+					}	
+				}
+			});
+		anim.add(this.el);
 
-		this.el.drawImage("zombie1", 0, 0, 64, 64, 0, 0, 64, 64);
+		this.el.drawImage("zombie1");
 
 		this.setPosition(data.x,data.y);
 		this.hp = this.hp_max = data.hp_max;
