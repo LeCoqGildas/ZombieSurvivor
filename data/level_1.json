@@ -10,6 +10,17 @@
          "width":20,
          "x":0,
          "y":0
+        }, 
+        {
+         "height":20,
+         "name":"player",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":20,
+         "x":0,
+         "y":0
         }],
  "orientation":"orthogonal",
  "properties":
@@ -31,6 +42,17 @@
             },
          "spacing":0,
          "tileheight":64,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "passable":"1"
+                },
+             "4":
+                {
+                 "passable":"1"
+                }
+            },
          "tilewidth":64
         }],
  "tilewidth":64,

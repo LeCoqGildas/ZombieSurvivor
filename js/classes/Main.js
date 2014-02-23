@@ -34,12 +34,12 @@ canvas.Scene.new({
 				bar_full = self.createElement(),
 				bar_empty = self.createElement();
 
-			bar_empty.drawImage("bar_empty" , 215, 250);
+			bar_empty.drawImage("bar_empty" , 260, 250);
 			stage.append(bar_empty);
 			stage.append(bar_full);
 			canvas.Materials.load("images", files , function(){
 				percentage += Math.round(100 / files.length);
-				bar_full.drawImage("bar_full", 215, 250, percentage + "%");
+				bar_full.drawImage("bar_full", 260, 250, percentage + "%");
 				stage.refresh();
 			}, function(){
 				canvas.Scene.call("Title");

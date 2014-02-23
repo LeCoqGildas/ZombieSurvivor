@@ -1,7 +1,7 @@
 Class.create("Game_Player", {
 	map: null,
 	currentState: "",
-	speed: 15,
+	speed: 10,
 	x: 0,
 	y: 0,
 	a: 0,//acceleration
@@ -28,7 +28,7 @@ Class.create("Game_Player", {
 	},
 	move: function(dir){
 		this.dir = dir,
-		this.a += .05;
+		this.a += .02;
 		if(this.a >= 1){
 			this.a =1;
 		}
@@ -50,7 +50,7 @@ Class.create("Game_Player", {
 				y += this.speed;
 				break;
 		}
-		if(this.map.isPassable(this, x, this.y)){
+		if(this.map.isPassable(this, x, y)){
 			//console.log("passable");
 			this.x = x;
 			this.y = y;
@@ -58,6 +58,7 @@ Class.create("Game_Player", {
 		}else{
 			//console.log("pas passable");
 		}
+		//return (dir == "up" || dir == "bottom") || (dir == "left" || dir == "right") ? this.y : this.x;
 		return dir == "up" || dir == "bottom" ? this.y : this.x;
 
 	},
@@ -65,9 +66,8 @@ Class.create("Game_Player", {
 		this.a = 0;
 		this.d = 1;
 	},
-	decelerationUpdate: function(){
+	decelerationXUpdate: function(){
 		var dir = this.dece_dir;
-
 		if (dir){
 			this.d -= .1;
 			if(this.d <= 0){
@@ -78,7 +78,6 @@ Class.create("Game_Player", {
 			var y = this.y;
 			var x = this.x;
 			switch(dir){
-	
 				case "left":
 					x -= speed;
 					break;
@@ -92,7 +91,7 @@ Class.create("Game_Player", {
 					y += this.speed;
 					break;
 			}
-			if(this.map.isPassable(this, x, this.y)){
+			if(this.map.isPassable(this, x, y)){
 				//console.log("passable");
 				this.y = y;
 				this.x = x;
@@ -100,11 +99,46 @@ Class.create("Game_Player", {
 				//console.log("pas passable");
 			}
 		}
-		return dir == "up" || dir == "bottom" ? this.y : this.x;
+		return this.x;
+		//return (dir == "up" || dir == "bottom") || (dir == "left" || dir == "right") ? this.y : this.x;
+	},
+	decelerationYUpdate: function(){
+		var dir = this.dece_dir;
+		if (dir){
+			this.d -= .1;
+			if(this.d <= 0){
+				this.d = 0;
+				this.dece_dir = false;
+			}
+			var speed = this.speed * this.d;
+			var y = this.y;
+			var x = this.x;
+			switch(dir){
+				case "left":
+					x -= speed;
+					break;
+				case "right":
+					x += speed;
+					break;
+				case "up":
+					y -= this.speed;
+					break;
+				case "bottom":
+					y += this.speed;
+					break;
+			}
+			if(this.map.isPassable(this, x, y)){
+				//console.log("passable");
+				this.y = y;
+				this.x = x;
+			}
+		}
+		return this.y;
 	},
 	setDeceleration: function(dir){
 		this.dece_dir = dir;
-	},
+		console.log(this.dece_dir);
+	}/*,
 	gravityUpdate: function(){
 		var velocity = this._gravity.velocity; 
 		var new_y = this.y;
@@ -159,6 +193,6 @@ Class.create("Game_Player", {
 			this.currentState = "godown";
 		}
 
-	}
+	}*/
 	
 });

@@ -14,7 +14,6 @@ Class.create("Game_Map", {
 			var self = this;
 
 			if(new_x < 0 || (new_x + player.width) > this.map.getWidthPixel()){
-
 				return false;
 			}
 			
@@ -26,12 +25,9 @@ Class.create("Game_Map", {
 
 				var map_x = Math.floor(x / tile_w );
 				var map_y = Math.floor(y / tile_h );
-			
 				var props = self.map.getTileProperties(null, map_x, map_y);
-
 				for( var i = 0; i < props.length; i++){
 					if(props[i] && props[i].passable == "0"){
-
 						return false;
 					}
 				}
@@ -57,6 +53,7 @@ Class.create("Game_Map", {
 
 				return true;
 			}
+
 			for(var i=0; i < this.entities.length; i++){
 				ent = this.entities[i];
 				if ( !pointIsPassable(ent, new_x, new_y) 
@@ -70,5 +67,6 @@ Class.create("Game_Map", {
 			
 			}
 			return true;
-		}	
+		}
+
 });

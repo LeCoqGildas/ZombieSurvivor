@@ -18,11 +18,9 @@ canvas.Scene.new({
 		tiled.ready(function() {
 			var tile_w = this.getTileWidth();
 			var tile_h = this.getTileHeight();
-			
 
 			self.game_map = Class.new("Game_Map", [this]);
-			self.game_player = Class.new("Game_Player", ["playerSprite",64,64,1 * tile_w, 8*tile_h, self.game_map]);
-
+			self.game_player = Class.new("Game_Player", ["player",64,64,10 * tile_w, 10 * tile_h, self.game_map]);
 			self.player = self.createElement();
 			self.player.drawImage("playerBottomFix");
 			self.player.x = self.game_player.x;
@@ -35,7 +33,7 @@ canvas.Scene.new({
 			
 			var map = self.scrolling.addScroll({
 				element: this.el, //element décor
-				speed: 3,//vitesse de defilement
+				speed: 10,//vitesse de defilement
 				block: true, //ne défile plus si les extremite touche le bord du canvas
 				width: this.getWidthPixel(),
 				height: this.getHeightPixel()
@@ -69,7 +67,6 @@ canvas.Scene.new({
 						},
 						frequence: 6
 					},
-					
 					up:{
 						frames: [9,11],
 						size:{
@@ -77,8 +74,7 @@ canvas.Scene.new({
 							height:64,
 						},
 						frequence: 6
-					}
-					
+					}	
 				}
 			});
 
@@ -96,7 +92,6 @@ canvas.Scene.new({
 			canvas.Input.keyDown(Input.Bottom, function(){
 				anim.play("bottom",true);	
 			});
-
 			canvas.Input.keyUp(Input.Right, function(){
 				anim.stop();
 				self.game_player.moveClear();
@@ -104,7 +99,6 @@ canvas.Scene.new({
 				self.player.drawImage("playerBottomFix");
 				
 			});
-
 			canvas.Input.keyUp(Input.Left, function(){
 				anim.stop();
 				self.game_player.moveClear();
@@ -117,7 +111,6 @@ canvas.Scene.new({
 				self.game_player.setDeceleration("up");
 				self.player.drawImage("playerBottomFix");
 			});
-
 			canvas.Input.keyUp(Input.Bottom, function(){
 				anim.stop();
 				self.game_player.moveClear();
@@ -152,17 +145,18 @@ canvas.Scene.new({
 			"bottom":[Input.Bottom,y]/*,
 			"space":Input.Space*/
 		};
-		/*for(var key in input){
+		for(var key in input){
 			if(canvas.Input.isPressed(input[key][0])){
 				this.player[input[key][1]] = this.game_player.move(key);
 			}
-		}*/
+		}
 		/*if(canvas.Input.isPressed(Input.Space)){
 			this.game_player.jumpUpdate();	
 		}*/
 
 		this.scrolling.update();
-		//this.player.x = this.game_player.decelerationUpdate();
+		this.player.x = this.game_player.decelerationXUpdate();
+		this.player.y = this.game_player.decelerationYUpdate();
 		//this.player.y = this.game_player.gravityUpdate();
 		
 		

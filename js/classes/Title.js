@@ -75,8 +75,6 @@ canvas.Scene.new({
 				});			
 				stage.append(btn);
 		}
-		
-		
 		music.play();
 	},
 	render: function(stage){	
