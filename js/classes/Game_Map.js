@@ -4,19 +4,15 @@ Class.create("Game_Map", {
 		initialize: function(map){
 			this.map = map;
 		},
-		/*addEntity: function(id, data){
-			var entity = Class.new("Game_Entity", [data.x, data.y, data.width, data.height]);
-			this.entities.push(entity);
-			return entity;
-		},*/
 		addEntity: function(id, data){
 			var entity = Class.new("Game_Ennemy", [id,data.x, data.y, data.width, data.height]);
+
 			this.entities.push(entity);
 			return entity;
 		},
 		removeEntity: function(id){
 			for(var i=0; i < this.entities.length; i++){
-				if(this.entities[id].id = id){
+				if(this.entities[i].id = id){
 					this.entities.splice(i,1);
 					return true;
 				}
@@ -63,14 +59,14 @@ Class.create("Game_Map", {
 				return true;
 			}
 
-			for(var i=0; i < this.entities.length; i++){
+			for(var i = 0; i < this.entities.length; i++){
 				ent = this.entities[i];
 				if ( !pointIsPassable(ent, new_x, new_y) 
 					|| !pointIsPassable(ent, new_x +player.width, new_y)
 					|| !pointIsPassable(ent, new_x , new_y + player.height)
 					|| !pointIsPassable(ent, new_x + player.width, new_y + player.height)){
 					//non traversable
-					//return false;
+					return false;
 				}
 			}
 			return true;

@@ -10,5 +10,9 @@
 	{
 		"id": "button_On",
 		"path": "img/sd/title/button_On.png"
+	},
+	{
+		"id": "zombie1",
+		"path": "img/sd/sprite/zombie1.png"
 	}
 ]

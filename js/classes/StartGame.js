@@ -17,14 +17,15 @@ canvas.Scene.new({
 		this.sprites[id] = Class.new("Sprite_Ennemies", [id, this, layer, data]);
 	},
 	pressEnnemies: function(stage){
-		var self = this, damage;
+		var self = this;
+		var damage;
 		canvas.Input.press(Input.Enter, function(){
 			for(var id in self.ennemies){
 				if(self.ennemies[id].isHit()){
 					damage = self.ennemies[id].damage(self.game_player);
-					self.displayDamage(damage, self.sprite[id].el);
-					if(self.sprite[id].hit(damage)){
-						self.deleteEnnemy[id];
+					self.displayDamage(damage, self.sprites[id].el);
+					if(self.sprites[id].hit(damage)){
+						self.deleteEnnemy(id);
 					}
 				}
 			}
@@ -64,6 +65,7 @@ canvas.Scene.new({
 
 			self.game_map = Class.new("Game_Map", [this]);
 			self.game_player = Class.new("Game_Player", ["player",64,64,10 * tile_w, 10 * tile_h, self.game_map]);
+			self.game_player.setLevel(1);
 			self.player = self.createElement();
 			self.player.drawImage("playerBottomFix");
 			self.player.x = self.game_player.x;
@@ -74,14 +76,13 @@ canvas.Scene.new({
 				x: 10 * tile_w,
 				y: 5 * tile_h,
 				width: 64,
-				heigth: 64,
+				height: 64,
 				attack: 10,
 				defense: 5,
 				strength: 10,
 				hp_max: 100
 			});
 			stage.append(self.player);//affiche le joueur
-			
 
 			self.scrolling = canvas.Scrolling.new(self, tile_w, tile_h);
 			self.scrolling.setMainElement(self.player);
@@ -132,7 +133,7 @@ canvas.Scene.new({
 					}	
 				}
 			});
-
+			
 			anim.add(self.player);
 
 			canvas.Input.keyDown(Input.Right, function(){

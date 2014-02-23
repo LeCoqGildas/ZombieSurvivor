@@ -21,6 +21,17 @@
          "width":20,
          "x":0,
          "y":0
+        }, 
+        {
+         "height":20,
+         "name":"ennemies",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":20,
+         "x":0,
+         "y":0
         }],
  "orientation":"orthogonal",
  "properties":

@@ -13,7 +13,7 @@ Class.create("Game_Ennemy", {
 		return this;
 	},
 	damage: function(player){
-		var power = player.attack -(this.defense / 2);
+		var power = player.getAttack() - (this.defense / 2);
 		var variance = 15;
 		var damage = player.strenght + (variance + Math.floor(Math.random() * 
 			Math.round(variance/3)) * (Math.random() > .5? -1:1));

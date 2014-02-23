@@ -9,7 +9,8 @@ Class.create("Game_Entity", {
 	dir:"right",
 	_hit: false,
 	_call_hit: {},
-	initialize: function(x, y, width, height){
+	initialize: function(id,x, y, width, height){
+		this.id = id;
 		this.x = x;
 		this.y = y;
 		this.height = height;
@@ -32,8 +33,6 @@ Class.create("Game_Entity", {
 			} 
 		}
 		this._hit = val;
-
-
 	},
 	isHit: function(){
 		return this._hit;

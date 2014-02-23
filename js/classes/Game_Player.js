@@ -18,13 +18,21 @@ Class.create("Game_Player", {
 		power: 40,
 		velocity: 1
 	},
+	level: 1,
+	strenght: 10,
+	attack: [20,50,70,90,100],
+	exp:[0,0,25,65,127,215,337,499,709,974,1302],
+	items:[],
+	hp: 100,
+	hp_max: 100,
 	initialize: function(id, width, height, x, y, map){
+		this.id = id;
 		this.x = x;
 		this.y = y;
-		this.id = id;
 		this.width = width;
 		this.height = height;
 		this.map = map;
+		//setHp
 	},
 	move: function(dir){
 		this.dir = dir,
@@ -137,61 +145,12 @@ Class.create("Game_Player", {
 	},
 	setDeceleration: function(dir){
 		this.dece_dir = dir;
-	}/*,
-	gravityUpdate: function(){
-		var velocity = this._gravity.velocity; 
-		var new_y = this.y;
-		if(this.currentState != "jumping"){
-			velocity += .05;
-			if(velocity >= 1){
-				velocity = 1;
-			}
-			new_y += (this._gravity.power * velocity);
-			if(this.map.isPassable(this, this.x, new_y)){
-				this.y = new_y;
-				this._gravity.velocity = velocity;		
-			}
-			else{
-				this.currentState = "platform";
-				this._gravity.velocity = 0;
-				//console.log("platform");
-			}
-		}	
-		return this.y;
 	},
-	jumpUpdate: function(){
-		var velocity = this._jump.velocity;
-		var new_y = this.y;
-		if(this.currentState == "jumping"){
-
-			velocity -= .05;
-			if(velocity <= 0){
-				velocity = 1;
-				this.currentState = "godown";
-				//console.log("godown");
-			}
-			else{
-				new_y -= this._jump.power * velocity;
-			}
-			if(this.map.isPassable(this, this.x, new_y)){
-				this._jump.velocity = velocity;
-				this.y = new_y;
-			}else{
-				this.currentState = "godown";
-			}
-		}
-		return this.y;
+	setLevel: function(level){
+		this.level = level;
 	},
-	jump: function(state){
-
-		if(state && this.currentState == "platform" ){
-			this.currentState = "jumping";
-		}
-		else if(!state && this.currentState == "jumping"){
-			this._jump.velocity = 1;
-			this.currentState = "godown";
-		}
-
-	}*/
+	getAttack: function(){
+		return this.attack[this.level];
+	}
 	
 });
