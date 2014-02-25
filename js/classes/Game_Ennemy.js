@@ -133,7 +133,7 @@ Class.create("Game_Ennemy", {
 				y += speed;
 				break;
 		}
-		if(this.map.isPassable(this.map,this, x, y)){
+		if(this.isPassable(this.map,this, x, y)){
 			//console.log("passable");
 			this.x = x;
 			this.y = y;
@@ -183,7 +183,7 @@ Class.create("Game_Ennemy", {
 				y += speed;
 				break;
 			}
-			if(this.map.isPassable(this.map,this, x, y)){
+			if(this.isPassable(this.map,this, x, y)){
 			//console.log("passable");
 				this.x = x;
 				this.y = y;
