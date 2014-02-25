@@ -78,6 +78,7 @@ canvas.Scene.new({
 				y: 7 * tile_h,
 				width: 64,
 				height: 64,
+				speed: 0.5,
 				attack: 10,
 				defense: 5,
 				strength: 10,

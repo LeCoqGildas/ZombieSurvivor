@@ -1,11 +1,11 @@
 Class.create("Game_Ennemy", {
 	map: null,
 	dir: "",
-	speed: 1,
+	speed: 0,
 	x: 0,
 	y: 0,
 	a: 0,//acceleration
-	d: 0.1,//decélération
+	d: 1,//decélération
 	attack: 0,
 	defense: 0,
 	strenght: 0,
@@ -22,6 +22,7 @@ Class.create("Game_Ennemy", {
 		this.hp = params.hp;
 		this.hp_max = params.hp_max;
 		this.map = params.map;
+		this.speed = params.speed;
 		return this;
 	},
 	damage: function(player){
@@ -78,20 +79,22 @@ Class.create("Game_Ennemy", {
 			}
 		}
 		//corriger ici
+		//left
 		if(player.x < this.x && player.y < this.y) this.dir = "leftUp";
-		if(player.x < this.x && ((player.y-32) <= this.y || this.y >= (player.y+32))) this.dir = "left";
+		if(player.x < this.x && player.y == this.y) this.dir = "left";
 		if(player.x < this.x && player.y > this.y) this.dir = "leftBottom";
 
+		//right
 		if(player.x > this.x && player.y < this.y) this.dir = "rightUp";
-		if(player.x > this.x && ((player.y-32) <= this.y || this.y >= (player.y+32))) this.dir = "right";
+		if(player.x > this.x && player.y == this.y) this.dir = "right";
 		if(player.x > this.x && player.y > this.y) this.dir = "rightBottom";
 
-		if(player.y < this.y && player.x == this.x) this.dir = "up";
-		if(player.y > this.y && player.x == this.x) this.dir = "bottom";
+		//up || bottom
+		if(player.x == this.x && player.y < this.y) this.dir = "up";
+		if(player.x == this.x && player.y > this.y) this.dir = "bottom";
 
 		if(callbacks[this.state]) callbacks[this.state].call(this, this.dir);
 		//console.log(this.dir);
-		//console.log(player.y +" "+ this.y);+ - 4
 	},
 	move: function(dir){
 		this.dir = dir,
@@ -186,7 +189,7 @@ Class.create("Game_Ennemy", {
 			if(this.isPassable(this.map,this, x, y)){
 			//console.log("passable");
 				this.x = x;
-				this.y = y;
+				//this.y = y;
 
 			}
 			//this.y = y;
@@ -241,12 +244,12 @@ Class.create("Game_Ennemy", {
 	setDeceleration: function(dir){
 		this.dir = dir;
 	},
-	isPassable: function(map, player, new_x, new_y){
+	isPassable: function(map, ennemy,new_x, new_y){
 			var ent;
 			var self = this;
 
-			if(new_x < 0 || (new_x + player.width) > map.map.getWidthPixel() || 
-				new_y < 0 || (new_y + player.height) > map.map.getHeightPixel()){
+			if(new_x < 0 || (new_x + ennemy.width) > map.map.getWidthPixel() || 
+				new_y < 0 || (new_y + ennemy.height) > map.map.getHeightPixel()){
 				return false;
 			}	
 			var tile_w = map.map.getTileWidth();
@@ -259,6 +262,7 @@ Class.create("Game_Ennemy", {
 				var props = self.map.map.getTileProperties(null, map_x, map_y);
 				for( var i = 0; i < props.length; i++){
 					if(props[i] && props[i].passable == "0"){
+
 						return false;
 					}
 				}
@@ -266,9 +270,10 @@ Class.create("Game_Ennemy", {
 			}
 
 			if ( !pointIsPassableInTile(new_x, new_y) 
-				|| !pointIsPassableInTile(new_x + player.width, new_y)
-				|| !pointIsPassableInTile(new_x , new_y + player.height)
-				|| !pointIsPassableInTile(new_x + player.width, new_y + player.height)){
+				|| !pointIsPassableInTile(new_x + ennemy.width, new_y)
+				|| !pointIsPassableInTile(new_x , new_y + ennemy.height)
+				|| !pointIsPassableInTile(new_x + ennemy.width, new_y + ennemy.height)){
+
 				return false;
 			}
 			//return true;
@@ -276,6 +281,7 @@ Class.create("Game_Ennemy", {
 			function pointIsPassable(ent, x, y){
 				if(x >= ent.x && x <= ent.x + ent.width && y >= ent.y && y <= ent.y + ent.height){
 					ent.hit(true);//ref game_entity
+					console.log("false");
 					return false;
 				}
 				ent.hit(false);
@@ -285,9 +291,9 @@ Class.create("Game_Ennemy", {
 			/*for(var i = 0; i < map.entities.length; i++){
 				ent = map.entities[i];
 				if ( !pointIsPassable(ent, new_x, new_y) 
-					|| !pointIsPassable(ent, new_x +player.width, new_y)
-					|| !pointIsPassable(ent, new_x , new_y + player.height)
-					|| !pointIsPassable(ent, new_x + player.width, new_y + player.height)){
+					|| !pointIsPassable(ent, new_x +ennemy.width, new_y)
+					|| !pointIsPassable(ent, new_x , new_y + ennemy.height)
+					|| !pointIsPassable(ent, new_x + ennemy.width, new_y + ennemy.height)){
 					//non traversable
 					return false;
 				}
