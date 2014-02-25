@@ -1,5 +1,5 @@
 Class.create("Game_Entity", {
-	speed: 1,
+	speed: 0.3,
 	x: 0,
 	y: 0,
 	width:0,
@@ -18,8 +18,7 @@ Class.create("Game_Entity", {
 	},
 	callHit: function(on, off){
 		this._call_hit.on = on;//sprite.hit(true);
-		this._call_hit.off = off;//sprite.hit(false);
-		
+		this._call_hit.off = off;//sprite.hit(false);	
 	},
 	hit: function(val){
 		//console.log(val);

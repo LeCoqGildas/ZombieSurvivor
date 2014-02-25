@@ -82,7 +82,7 @@ canvas.Scene.new({
 				defense: 5,
 				strength: 10,
 				hp_max: 100,
-				map: self.game_map
+				map: self.game_map,
 			});
 			stage.append(self.player);//affiche le joueur
 
@@ -172,6 +172,8 @@ canvas.Scene.new({
 			});
 		});
 		this.pressEnnemies(stage);
+
+		
 		
 	},
 	render: function(stage){
@@ -201,7 +203,7 @@ canvas.Scene.new({
 		for(var id in this.ennemies){
 			var ennemy = this.ennemies[id];
 			var sprite = this.sprites[id];
-
+			var animDir = null;
 			ennemy.reaction(this.game_player, {
 				"aggressive": function(dir){
 					console.log("agressive");
@@ -210,15 +212,22 @@ canvas.Scene.new({
 					console.log("mid-agressive");
 				},
 				"attack": function(dir){
+					if(dir != animDir){
+						sprite.animZombie(dir);
+						animDir=dir;
+					}
+					
 					self.game_map.entities[id].decelerationXUpdate(dir);
 					sprite.el.x = self.game_map.entities[id].decelerationXUpdate(dir);
 					self.game_map.entities[id].decelerationYUpdate(dir);
 					sprite.el.y = self.game_map.entities[id].decelerationYUpdate(dir);
-					//console.log(self.game_map.entities[id].decelerationYUpdate(dir));
 				}
 				
 			});
-	
+			if(self.game_map.entities[id].detection_area.state == "notDetect"){
+				sprite.anim.stop();
+			}
+			//sprite.anim.stop();
 		}
 
 		stage.refresh();

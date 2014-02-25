@@ -79,11 +79,11 @@ Class.create("Game_Ennemy", {
 		}
 		//corriger ici
 		if(player.x < this.x && player.y < this.y) this.dir = "leftUp";
-		if(player.x < this.x && player.y == this.y) this.dir = "left";
+		if(player.x < this.x && ((player.y-32) <= this.y || this.y >= (player.y+32))) this.dir = "left";
 		if(player.x < this.x && player.y > this.y) this.dir = "leftBottom";
 
 		if(player.x > this.x && player.y < this.y) this.dir = "rightUp";
-		if(player.x > this.x && player.y == this.y) this.dir = "right";
+		if(player.x > this.x && ((player.y-32) <= this.y || this.y >= (player.y+32))) this.dir = "right";
 		if(player.x > this.x && player.y > this.y) this.dir = "rightBottom";
 
 		if(player.y < this.y && player.x == this.x) this.dir = "up";
@@ -95,7 +95,7 @@ Class.create("Game_Ennemy", {
 	},
 	move: function(dir){
 		this.dir = dir,
-		this.a += .02;
+		this.a += 1;
 		if(this.a >= 1){
 			this.a =1;
 		}
@@ -133,8 +133,14 @@ Class.create("Game_Ennemy", {
 				y += speed;
 				break;
 		}
-		this.x = x;
-		this.y = y;
+		if(this.map.isPassable(this.map,this, x, y)){
+			//console.log("passable");
+			this.x = x;
+			this.y = y;
+
+		}
+		//this.x = x;
+		//this.y = y;
 	},
 	moveClear: function(){
 		this.a = 0;
@@ -177,8 +183,14 @@ Class.create("Game_Ennemy", {
 				y += speed;
 				break;
 			}
-			this.y = y;
-			this.x = x;
+			if(this.map.isPassable(this.map,this, x, y)){
+			//console.log("passable");
+				this.x = x;
+				this.y = y;
+
+			}
+			//this.y = y;
+			//this.x = x;
 		}
 		return this.x;
 
@@ -219,12 +231,68 @@ Class.create("Game_Ennemy", {
 				y += speed;
 				break;
 			}
-			this.y = y;
+			if(this.isPassable(this.map,this, x, y)){
+				this.y = y;
+			}
 		}
 		return this.y;
 
 	},
 	setDeceleration: function(dir){
 		this.dir = dir;
-	}
+	},
+	isPassable: function(map, player, new_x, new_y){
+			var ent;
+			var self = this;
+
+			if(new_x < 0 || (new_x + player.width) > map.map.getWidthPixel() || 
+				new_y < 0 || (new_y + player.height) > map.map.getHeightPixel()){
+				return false;
+			}	
+			var tile_w = map.map.getTileWidth();
+			var tile_h = map.map.getTileHeight();
+
+			
+			function pointIsPassableInTile(x,y){
+				var map_x = Math.floor(x / tile_w );
+				var map_y = Math.floor(y / tile_h );
+				var props = self.map.map.getTileProperties(null, map_x, map_y);
+				for( var i = 0; i < props.length; i++){
+					if(props[i] && props[i].passable == "0"){
+						return false;
+					}
+				}
+				return true;
+			}
+
+			if ( !pointIsPassableInTile(new_x, new_y) 
+				|| !pointIsPassableInTile(new_x + player.width, new_y)
+				|| !pointIsPassableInTile(new_x , new_y + player.height)
+				|| !pointIsPassableInTile(new_x + player.width, new_y + player.height)){
+				return false;
+			}
+			//return true;
+
+			function pointIsPassable(ent, x, y){
+				if(x >= ent.x && x <= ent.x + ent.width && y >= ent.y && y <= ent.y + ent.height){
+					ent.hit(true);//ref game_entity
+					return false;
+				}
+				ent.hit(false);
+				return true;
+			}
+
+			/*for(var i = 0; i < map.entities.length; i++){
+				ent = map.entities[i];
+				if ( !pointIsPassable(ent, new_x, new_y) 
+					|| !pointIsPassable(ent, new_x +player.width, new_y)
+					|| !pointIsPassable(ent, new_x , new_y + player.height)
+					|| !pointIsPassable(ent, new_x + player.width, new_y + player.height)){
+					//non traversable
+					return false;
+				}
+			}*/
+			
+			return true;
+		}
 }).extend("Game_Entity");

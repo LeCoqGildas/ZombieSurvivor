@@ -4,10 +4,11 @@ Class.create("Sprite_Ennemies", {
 	hp: 0,
 	hp_max: 0,
 	width_bar: 60,
+	anim: null,
 	initialize: function(id, scene, layer,data){
 		this.scene = scene;
 		this.el = scene.createElement(data.width, data.height);
-		var anim = canvas.Animation.new({
+		this.anim = canvas.Animation.new({
 				images:"zombie",
 				animations:{
 					bottom:{
@@ -35,7 +36,7 @@ Class.create("Sprite_Ennemies", {
 						frequence: 6
 					},
 					up:{
-						frames: [38,40],
+						frames: [36,38],
 						size:{
 							width:64,
 							height:64,
@@ -44,7 +45,7 @@ Class.create("Sprite_Ennemies", {
 					}	
 				}
 			});
-		anim.add(this.el);
+		this.anim.add(this.el);
 
 		this.el.drawImage("zombie1");
 
@@ -79,5 +80,36 @@ Class.create("Sprite_Ennemies", {
 		var width = this.width_bar * this.hp / this.hp_max;
 		this.bar.fillRect(2, -5, width, 5);
 		return false;
+	},
+	animZombie: function(dir){
+		switch(dir){
+			case "leftUp":
+				this.anim.play("up", true);
+				break;
+			case "left":
+				this.anim.play("left", true);
+				break;
+			case "leftBottom":
+				this.anim.play("bottom", true);
+				break;
+			case "rightUp":
+				this.anim.play("up", true);
+				break;
+			case "right":
+				this.anim.play("right", true);
+				break;
+			case "rightBottom":
+				this.anim.play("bottom", true);
+				break;
+			case "up":
+				this.anim.play("up", true);
+				break;
+			case "bottom":
+				this.anim.play("bottom", true);
+				break;
+		}
+						
+		
+		
 	}
 });
