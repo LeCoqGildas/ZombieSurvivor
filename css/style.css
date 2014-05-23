@@ -14,13 +14,25 @@ body{
 }
 
 .verticAlign {
+	width:1278px;
 	display:block;
 	margin:0 auto;
 }
 
 #canvas {
-	display:block;
-	margin: 0 auto;
+	float:left;
+    border: 4px solid black;
+	background-color:black;
+}
+
+#canvasScore {
+	float:left;
+    border: 4px solid black;
+	background-color:black;
+}
+
+#canvasItem {
+	float:left;
     border: 4px solid black;
 	background-color:black;
 }

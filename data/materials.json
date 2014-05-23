@@ -4,6 +4,10 @@
 		"path": "img/sd/title/background.jpg"
 	},
 	{
+		"id": "title_background_game_over",
+		"path": "img/sd/title/backgroundGameOver.jpg"
+	},
+	{
 		"id": "button_Off",
 		"path": "img/sd/title/button_Off.png"
 	},
@@ -18,5 +22,9 @@
 	{
 		"id": "zombie",
 		"path": "img/sd/sprite/zombie.png"
+	},
+	{
+		"id": "pistol",
+		"path": "img/sd/weapons/pistol.png"
 	}
 ]

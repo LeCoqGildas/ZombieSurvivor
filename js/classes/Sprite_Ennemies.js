@@ -5,7 +5,7 @@ Class.create("Sprite_Ennemies", {
 	hp_max: 0,
 	width_bar: 60,
 	anim: null,
-	initialize: function(id, scene, layer,data){
+	initialize: function(id, scene, layer, data){
 		this.scene = scene;
 		this.el = scene.createElement(data.width, data.height);
 		this.anim = canvas.Animation.new({
@@ -50,6 +50,7 @@ Class.create("Sprite_Ennemies", {
 		this.el.drawImage("zombie1");
 
 		this.setPosition(data.x,data.y);
+		
 		this.hp = this.hp_max = data.hp_max;
 		this._displayBar();
 		layer.append(this.el);
@@ -108,8 +109,5 @@ Class.create("Sprite_Ennemies", {
 				this.anim.play("bottom", true);
 				break;
 		}
-						
-		
-		
 	}
 });

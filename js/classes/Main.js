@@ -1,4 +1,8 @@
 /*Init scene*/
+var canvasScore = CE.defines("canvasScore")
+		.ready(function() {
+		canvasScore.Scene.call("LoadScore");
+});
 
 var canvas = CE.defines("canvas")
 		.extend(Tiled)
@@ -10,6 +14,8 @@ var canvas = CE.defines("canvas")
 		canvas.Scene.call("Preload");
 
 });
+
+
 
 /*load
 /************************************************************************/

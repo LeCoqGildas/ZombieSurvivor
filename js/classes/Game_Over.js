@@ -1,7 +1,5 @@
-/*Title
-/*******************************************************************************/
 canvas.Scene.new({
-	name: "Title",
+	name: "Game_Over",
 	materials: {
 		sounds:{
 			background_sound:"sounds/title/fond.mp3",
@@ -23,17 +21,11 @@ canvas.Scene.new({
 						
 						canvas.Scene.call("startGame");	
 					}
-				},
-				option : {
-					height: 73,
-					click: function() {
-						//canvas.Scene.call("joueur");
-					}
 				}
 			};
 
 		var fond = self.createElement();
-		fond.drawImage("title_background", 0, 0);
+		fond.drawImage("title_background_game_over", 0, 0);
 		stage.append(fond);
 
 
@@ -52,7 +44,7 @@ canvas.Scene.new({
 				btn.y = pos + 180;
 				
 				btn.on("click", data_btn.click);
-				btn.on("mouseover",function(e) {
+				btn.on("mouseover",function() {
 					music_on_sound.play();
 					var _canvas = self.getCanvas(),
 							effect = self.createElement();
@@ -69,13 +61,13 @@ canvas.Scene.new({
 						});
 					this.drawImage("button_On", 0, pos, width, data_btn.height, 0, 0, width, data_btn.height);
 				});
-				btn.on("mouseout",function(e) {
+				btn.on("mouseout",function() {
 					music_off_sound.play();	
 					this.drawImage("button_Off", 0, pos, width, data_btn.height, 0, 0, width, data_btn.height);
 				});			
 				stage.append(btn);
 		}
-		music.play();
+		//music.play();
 	},
 	render: function(stage){	
 		stage.refresh();

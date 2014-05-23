@@ -1,18 +1,19 @@
 Class.create("Game_Map", {
 		map: null,
 		entities:[],
-		initialize: function(map){
+		initialize: function(map, scene, stage){
 			this.map = map;
+			this.scene = scene;
+			this.stage = stage;
 		},
 		addEntity: function(id, data){
-			var entity = Class.new("Game_Ennemy", [id,data.x, data.y, data.width, data.height]);
-
+			var entity = Class.new("Game_Ennemy", [id, data.x, data.y, data.width, data.height]);
 			this.entities.push(entity);
-			return entity;
+			return this.entities[id];
 		},
 		removeEntity: function(id){
 			for(var i=0; i < this.entities.length; i++){
-				if(this.entities[i].id = id){
+				if(this.entities[i].id == id){
 					this.entities.splice(i,1);
 					return true;
 				}
@@ -48,26 +49,146 @@ Class.create("Game_Map", {
 				|| !pointIsPassableInTile(new_x + player.width, new_y + player.height)){
 				return false;
 			}
-			//return true;
 
 			function pointIsPassable(ent, x, y){
-				if(x >= ent.x && x <= ent.x + ent.width && y >= ent.y && y <= ent.y + ent.height){
-					ent.hit(true);//ref game_entity
-					return false;
+				if(ent){
+					if( x >= ent.x && 
+						x <= ent.x + ent.width && 
+						y >= ent.y && 
+						y <= ent.y + ent.height){
+
+						ent.hit(true);//ref game_entity
+						//console.log(ent.name+" vous touche");
+						if(ent && ent.__name__ && ent.__name__=="Game_Ennemy"){
+
+							if (ent.enCombat == false ){
+								var damage = player.damage(ent);
+
+								ent.enCombat = true;
+								console.log("attaque");
+								ent.attaquer = setTimeout(function(){
+									console.log(ent.name+" attaque: -"+damage+"hp");
+									self.scene._displayDamage(damage, self.scene.player);
+									if(self.scene.hit(damage, self.stage)){
+										console.log("PERDU!");
+									}
+									ent.enCombat = false;
+								},1300);
+							}	
+						}
+						return false;
+					}
+					ent.hit(false);
+					ent.enCombat = false;
+
+					return true;
 				}
-				ent.hit(false);
-				return true;
 			}
 
 			for(var i = 0; i < this.entities.length; i++){
 				ent = this.entities[i];
-				if ( !pointIsPassable(ent, new_x, new_y) 
-					|| !pointIsPassable(ent, new_x +player.width, new_y)
-					|| !pointIsPassable(ent, new_x , new_y + player.height)
-					|| !pointIsPassable(ent, new_x + player.width, new_y + player.height)){
-					//non traversable
+
+				if( //Border Top Left
+					(player.x < ent.x &&
+					player.x + player.width > ent.x &&
+					player.x < ent.x + ent.width &&
+					player.x + player.width < ent.x + ent.width &&
+					player.y < ent.y &&
+					player.y + player.height > ent.y &&
+					player.y < ent.y + ent.height &&
+					player.y + player.height < ent.y + ent.height) ||
+
+					//Top
+					(player.x == ent.x &&
+					player.x + player.width > ent.x &&
+					player.x < ent.x + ent.width &&
+					player.x + player.width == ent.x + ent.width &&
+					player.y < ent.y &&
+					player.y + player.height > ent.y &&
+					player.y < ent.y + ent.height &&
+					player.y + player.height < ent.y + ent.height) ||
+
+					//Border Top Right
+					(player.x > ent.x &&
+					player.x + player.width > ent.x &&
+					player.x < ent.x + ent.width &&
+					player.x + player.width > ent.x + ent.width &&
+					player.y < ent.y &&
+					player.y + player.height > ent.y &&
+					player.y < ent.y + ent.height &&
+					player.y + player.height < ent.y + ent.height) ||
+
+					//Left
+					(player.x < ent.x &&
+					player.x + player.width > ent.x &&
+					player.x < ent.x + ent.width &&
+					player.x + player.width < ent.x + ent.width &&
+					player.y == ent.y &&
+					player.y + player.height > ent.y &&
+					player.y < ent.y + ent.height &&
+					player.y + player.height == ent.y + ent.height) ||
+
+					//Border Bottom Left
+					(player.x < ent.x &&
+					player.x + player.width > ent.x &&
+					player.x < ent.x + ent.width &&
+					player.x + player.width < ent.x + ent.width &&
+					player.y > ent.y &&
+					player.y + player.height > ent.y &&
+					player.y < ent.y + ent.height &&
+					player.y + player.height > ent.y + ent.height) ||
+
+					//Bottom
+					(player.x == ent.x &&
+					player.x + player.width > ent.x &&
+					player.x < ent.x + ent.width &&
+					player.x + player.width == ent.x + ent.width &&
+					player.y > ent.y &&
+					player.y + player.height > ent.y &&
+					player.y < ent.y + ent.height &&
+					player.y + player.height > ent.y + ent.height) ||
+
+					//Border Bottom Right
+					(player.x > ent.x &&
+					player.x + player.width > ent.x &&
+					player.x < ent.x + ent.width &&
+					player.x + player.width > ent.x + ent.width &&
+					player.y > ent.y &&
+					player.y + player.height > ent.y &&
+					player.y < ent.y + ent.height &&
+					player.y + player.height > ent.y + ent.height) ||
+
+					//Right
+					(player.x > ent.x &&
+					player.x + player.width > ent.x &&
+					player.x < ent.x + ent.width &&
+					player.x + player.width > ent.x + ent.width &&
+					player.y == ent.y &&
+					player.y + player.height > ent.y &&
+					player.y < ent.y + ent.height &&
+					player.y + player.height == ent.y + ent.height)
+
+				){
+					ent.hit(true);//ref game_entity
+
+					if(ent && ent.__name__ && ent.__name__=="Game_Ennemy"){
+						if (ent.enCombat == false ){
+							var damage = player.damage(ent);
+							ent.enCombat = true;
+							ent.attaquer = setTimeout(function(){
+								console.log(ent.name+" attaque: -"+damage+"hp");
+								self.scene._displayDamage(damage, self.scene.player);
+								if(self.scene.hit(damage, self.stage)){
+									console.log("PERDU!");
+								}
+								ent.enCombat = false;
+							},1300);
+						}	
+					}
 					return false;
 				}
+				ent.hit(false);
+				ent.enCombat = false;
 			}
 			return true;
 		}

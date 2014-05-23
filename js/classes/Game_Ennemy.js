@@ -1,9 +1,12 @@
 Class.create("Game_Ennemy", {
 	map: null,
+	enCombat: false,//détermine quand l'ennemie attaque
 	dir: "",
 	speed: 0,
 	x: 0,
 	y: 0,
+	height : 64,
+	width : 64,
 	a: 0,//acceleration
 	d: 1,//decélération
 	attack: 0,
@@ -16,6 +19,7 @@ Class.create("Game_Ennemy", {
 		state: ""
 	},
 	setParams: function(params){
+		this.name = params.name;
 		this.attack = params.attack;
 		this.defense = params.defense;
 		this.strenght = params.strenght;
@@ -23,6 +27,7 @@ Class.create("Game_Ennemy", {
 		this.hp_max = params.hp_max;
 		this.map = params.map;
 		this.speed = params.speed;
+
 		return this;
 	},
 	damage: function(player){
@@ -31,6 +36,7 @@ Class.create("Game_Ennemy", {
 		var damage = player.strenght + (variance + Math.floor(Math.random() * 
 			Math.round(variance/3)) * (Math.random() > .5? -1:1));
 		this.changeHp(-damage);
+		
 		return damage;
 	},
 	changeHp: function(num){
@@ -42,6 +48,9 @@ Class.create("Game_Ennemy", {
 			hp = 0;
 		}
 		this.hp = hp;
+	},
+	getAttack: function(){
+		return this.attack;
 	},
 	changeDetectionState: function(name){
 		this.detection_area.state = name;
@@ -92,9 +101,8 @@ Class.create("Game_Ennemy", {
 		//up || bottom
 		if(player.x == this.x && player.y < this.y) this.dir = "up";
 		if(player.x == this.x && player.y > this.y) this.dir = "bottom";
-
 		if(callbacks[this.state]) callbacks[this.state].call(this, this.dir);
-		//console.log(this.dir);
+		//console.log((player.y + player.height)+" "+(this.y));
 	},
 	move: function(dir){
 		this.dir = dir,
@@ -136,14 +144,8 @@ Class.create("Game_Ennemy", {
 				y += speed;
 				break;
 		}
-		if(this.isPassable(this.map,this, x, y)){
-			//console.log("passable");
-			this.x = x;
-			this.y = y;
-
-		}
-		//this.x = x;
-		//this.y = y;
+		this.x = x;
+		this.y = y;
 	},
 	moveClear: function(){
 		this.a = 0;
@@ -186,14 +188,7 @@ Class.create("Game_Ennemy", {
 				y += speed;
 				break;
 			}
-			if(this.isPassable(this.map,this, x, y)){
-			//console.log("passable");
-				this.x = x;
-				//this.y = y;
-
-			}
-			//this.y = y;
-			//this.x = x;
+			this.x = x;
 		}
 		return this.x;
 
@@ -234,71 +229,12 @@ Class.create("Game_Ennemy", {
 				y += speed;
 				break;
 			}
-			if(this.isPassable(this.map,this, x, y)){
-				this.y = y;
-			}
+			this.y = y;
 		}
 		return this.y;
 
 	},
 	setDeceleration: function(dir){
 		this.dir = dir;
-	},
-	isPassable: function(map, ennemy,new_x, new_y){
-			var ent;
-			var self = this;
-
-			if(new_x < 0 || (new_x + ennemy.width) > map.map.getWidthPixel() || 
-				new_y < 0 || (new_y + ennemy.height) > map.map.getHeightPixel()){
-				return false;
-			}	
-			var tile_w = map.map.getTileWidth();
-			var tile_h = map.map.getTileHeight();
-
-			
-			function pointIsPassableInTile(x,y){
-				var map_x = Math.floor(x / tile_w );
-				var map_y = Math.floor(y / tile_h );
-				var props = self.map.map.getTileProperties(null, map_x, map_y);
-				for( var i = 0; i < props.length; i++){
-					if(props[i] && props[i].passable == "0"){
-
-						return false;
-					}
-				}
-				return true;
-			}
-
-			if ( !pointIsPassableInTile(new_x, new_y) 
-				|| !pointIsPassableInTile(new_x + ennemy.width, new_y)
-				|| !pointIsPassableInTile(new_x , new_y + ennemy.height)
-				|| !pointIsPassableInTile(new_x + ennemy.width, new_y + ennemy.height)){
-
-				return false;
-			}
-			//return true;
-
-			function pointIsPassable(ent, x, y){
-				if(x >= ent.x && x <= ent.x + ent.width && y >= ent.y && y <= ent.y + ent.height){
-					ent.hit(true);//ref game_entity
-					console.log("false");
-					return false;
-				}
-				ent.hit(false);
-				return true;
-			}
-
-			/*for(var i = 0; i < map.entities.length; i++){
-				ent = map.entities[i];
-				if ( !pointIsPassable(ent, new_x, new_y) 
-					|| !pointIsPassable(ent, new_x +ennemy.width, new_y)
-					|| !pointIsPassable(ent, new_x , new_y + ennemy.height)
-					|| !pointIsPassable(ent, new_x + ennemy.width, new_y + ennemy.height)){
-					//non traversable
-					return false;
-				}
-			}*/
-			
-			return true;
-		}
+	}
 }).extend("Game_Entity");

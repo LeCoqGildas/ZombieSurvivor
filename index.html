@@ -9,15 +9,22 @@
 		<script type="text/javascript" src="js/classes/Game_Map.js"></script>
 		<script type="text/javascript" src="js/classes/Game_Level.js"></script>
 		<script type="text/javascript" src="js/classes/Game_Entity.js"></script>
+		<script type="text/javascript" src="js/classes/Game_Item.js"></script>
+		<script type="text/javascript" src="js/classes/Item_Gun.js"></script>
+		<script type="text/javascript" src="js/classes/Sprite_Bullets.js"></script>
+		<script type="text/javascript" src="js/classes/Sprite_Items.js"></script>
 		<script type="text/javascript" src="js/classes/Animation.js"></script>
 		<script type="text/javascript" src="js/classes/Input.js"></script>
 		<script type="text/javascript" src="js/classes/Game_Player.js"></script>
 		<script type="text/javascript" src="js/classes/Scrolling.js"></script>
+
 		<script type="text/javascript" src="js/classes/Main.js"></script>
+		<script type="text/javascript" src="js/classes/Score.js"></script>
 		<script type="text/javascript" src="js/classes/Game_Ennemy.js"></script>
 		<script type="text/javascript" src="js/classes/Sprite_Ennemies.js"></script>
 		<script type="text/javascript" src="js/classes/StartGame.js"></script>
 		<script type="text/javascript" src="js/classes/Title.js"></script>
+		<script type="text/javascript" src="js/classes/Game_Over.js"></script>
 		
 		
 		
@@ -25,7 +32,11 @@
 	<body>
 		<div class="verticAlign title">Zombie Survivor</div>
 		<div class="verticAlign">
-		    <canvas id="canvas" width="854px" height="480px">Votre navigateur ne supporte pas HTML5, veuillez le mettre à jour pour jouer.</canvas>
+			<div id="canvasDiv">
+				<canvas id="canvasScore" width="200px" height="480px"></canvas>
+			    <canvas id="canvas" width="854px" height="480px">Votre navigateur ne supporte pas HTML5, veuillez le mettre à jour pour jouer.</canvas>
+			    <canvas id="canvasItem" width="200px" height="480px"></canvas>
+			</div>
 		</div>
 
 	</body>
