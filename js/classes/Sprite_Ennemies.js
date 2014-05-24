@@ -8,49 +8,78 @@ Class.create("Sprite_Ennemies", {
 	initialize: function(id, scene, layer, data){
 		this.scene = scene;
 		this.el = scene.createElement(data.width, data.height);
+		var random = Math.floor((Math.random() * 8));
+		var val = 0;
+		switch(random) {
+			case 0:
+				val = 0;
+				break;
+			case 1:
+				val = 3;
+				break;
+			case 2:
+				val = 6;
+				break;
+			case 3:
+				val = 9;
+				break;
+			case 4:
+				val = 48;
+				break;
+			case 5:
+				val = 51;
+				break;
+			case 6:
+				val = 54;
+				break;
+			case 7:
+				val = 57;
+				break;
+			default:
+				val = 0;
+				break;
+		}
+
 		this.anim = canvas.Animation.new({
-				images:"zombie",
-				animations:{
-					bottom:{
-						frames: [0,2],
-						size:{
-							width: 64,
-							height: 64,
-						},
-						frequence: 6
+			images:"zombie",
+			animations:{
+				bottom:{
+					frames: [val,val+2],
+					size:{
+						width: 64,
+						height: 64,
 					},
-					left:{
-						frames: [12,14],
-						size:{
-							width: 64,
-							height: 64,
-						},
-						frequence: 6
+					frequence: 6
+				},
+				left:{
+					frames: [val+12,val+14],
+					size:{
+						width: 64,
+						height: 64,
 					},
-					right:{
-						frames: [24,26],
-						size:{
-							width:64,
-							height:64,
-						},
-						frequence: 6
+					frequence: 6
+				},
+				right:{
+					frames: [val+24,val+26],
+					size:{
+						width:64,
+						height:64,
 					},
-					up:{
-						frames: [36,38],
-						size:{
-							width:64,
-							height:64,
-						},
-						frequence: 6
-					}	
-				}
-			});
+					frequence: 6
+				},
+				up:{
+					frames: [val+36,val+38],
+					size:{
+						width:64,
+						height:64,
+					},
+					frequence: 6
+				}	
+			}
+		});
 		this.anim.add(this.el);
 
-		this.el.drawImage("zombie1");
-
 		this.setPosition(data.x,data.y);
-		
 		this.hp = this.hp_max = data.hp_max;
 		this._displayBar();
 		layer.append(this.el);
@@ -82,7 +111,7 @@ Class.create("Sprite_Ennemies", {
 		this.bar.fillRect(2, -5, width, 5);
 		return false;
 	},
-	animZombie: function(dir){
+	animSprite: function(dir){
 		switch(dir){
 			case "leftUp":
 				this.anim.play("up", true);

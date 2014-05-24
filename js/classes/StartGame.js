@@ -23,7 +23,8 @@ canvas.Scene.new({
 		this.game_player = Class.new("Game_Player", ["player" ,64 ,64 ,6 * tile_w, 3 * tile_h, this.game_map]);
 		this.game_player.setLevel(1);
 		this.player = this.createElement();
-		this.player.drawImage("playerBottomFix");
+		//this.player.drawImage("playerBottomFix");
+
 		this.player.x = this.game_player.x;
 		this.player.y = this.game_player.y;
 		this._displayBar();//barre de vie
@@ -75,6 +76,11 @@ canvas.Scene.new({
 	/*Ajout d'un énnemie sur la carte*/
 		this.ennemies[id] = this.game_map.addEntity(id, data).setParams(data);
 		this.sprites[id] = Class.new("Sprite_Ennemies", [id, this, layer, data]);
+
+		
+		this.sprites[id].animSprite("bottom");
+		this.sprites[id].animDir="bottom";
+
 		console.log("Apparition de "+this.ennemies[id].name);
 	},
 	pressEnnemies: function(stage){
@@ -371,7 +377,7 @@ canvas.Scene.new({
 				name: "gun",
 				hp: 10,
 				speed: 800,
-				capacity: 5,
+				capacity: 25,
 			});
 			self.useItem(stage, self.game_player.items[0]);
 			if(self.game_player.items[0].__name__ == "Item_Gun"){
@@ -425,12 +431,62 @@ canvas.Scene.new({
 				
 			});
 
+			var random = Math.floor((Math.random() * 8));
+			var val = 0;
+			switch(random) {
+				case 0:
+					val = 0;
+					val_x = 64;
+					val_y = 0;
+					break;
+				case 1:
+					val = 3;
+					val_x = 256;
+					val_y = 0;
+					break;
+				case 2:
+					val = 6;
+					val_x = 448;
+					val_y = 0;
+					break;
+				case 3:
+					val = 9;
+					val_x = 640;
+					val_y = 0;
+					break;
+				case 4:
+					val = 48;
+					val_x = 64;
+					val_y = 256;
+					break;
+				case 5:
+					val = 51;
+					val_x = 256;
+					val_y = 256;
+					break;
+				case 6:
+					val = 54;
+					val_x = 448;
+					val_y = 256;
+					break;
+				case 7:
+					val = 57;
+					val_x = 640;
+					val_y = 256;
+					break;
+				default:
+					val = 0;
+					val_x = 0;
+					val_y = 0;
+					break;
+			}
+			self.player.drawImage("playerSprite", val_x, val_y, 64, 64, 0, 0, 64, 64);
 			//Annimation du joueur
 			var anim = canvas.Animation.new({
 				images:"playerSprite",
 				animations:{
 					bottom:{
-						frames: [0,2],
+						frames: [val,val+2],
 						size:{
 							width: 64,
 							height: 64,
@@ -438,7 +494,7 @@ canvas.Scene.new({
 						frequence: 6
 					},
 					left:{
-						frames: [3,5],
+						frames: [val+12,val+14],
 						size:{
 							width: 64,
 							height: 64,
@@ -446,7 +502,7 @@ canvas.Scene.new({
 						frequence: 6
 					},
 					right:{
-						frames: [6,8],
+						frames: [val+24,val+26],
 						size:{
 							width:64,
 							height:64,
@@ -454,7 +510,7 @@ canvas.Scene.new({
 						frequence: 6
 					},
 					up:{
-						frames: [9,11],
+						frames: [val+36,val+38],
 						size:{
 							width:64,
 							height:64,
@@ -464,8 +520,9 @@ canvas.Scene.new({
 				}
 			});
 			anim.add(self.player);
-
 			
+			
+
 
 			//Association des touches avec les animations
 			canvas.Input.keyDown(Input.Right, function(){
@@ -604,7 +661,7 @@ canvas.Scene.new({
 				"aggressive": function(dir){
 					//console.log("agressive");
 					if(dir != animDir){
-						sprite.animZombie(dir);
+						sprite.animSprite(dir);
 						animDir=dir;
 					}
 					
@@ -622,7 +679,7 @@ canvas.Scene.new({
 				"mid-aggressive": function(dir){
 					//console.log("mid-agressive");
 					if(dir != animDir){
-						sprite.animZombie(dir);
+						sprite.animSprite(dir);
 						animDir=dir;
 					}
 					
@@ -639,7 +696,7 @@ canvas.Scene.new({
 				},
 				"attack": function(dir){
 					if(dir != animDir){
-						sprite.animZombie(dir);
+						sprite.animSprite(dir);
 						animDir=dir;
 					}
 					
