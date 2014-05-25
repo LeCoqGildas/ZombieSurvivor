@@ -17,3 +17,12 @@ Up => Move up<br>
 Down => Move bottom<br>
 Left => Move left<br>
 Right => Move Right
+<br>
+<br>
+Next steps:
+The game will be multiplayer<br>
+The player can choose is avatar<br>
+Items, guns are random generated in the map<br>
+If all zombies are died, the level change<br>
+Player can buy guns and items<br>
+The player can build castel
