@@ -9,3 +9,11 @@ I use the CanvasEngine Framework http://canvasengine.net/<br><br>
 For test, put the folder in wamp or apach2, and start the game on navigator.
 
 
+Press:
+
+A => fire
+Enter => Hit/Attack
+Up => Move up
+Down => Move bottom
+Left => Move left
+Right => Move Right
